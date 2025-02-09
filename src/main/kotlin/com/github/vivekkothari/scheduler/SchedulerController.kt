@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api")
 data class SchedulerController(private val schedulerService: SchedulerService) {
 
-  /** Say hello */
-  @get:GetMapping("/") val sayHello: String = "Hello world"
-
   /** Schedule a task. */
   @PutMapping("/schedule")
   fun scheduleTask(@RequestBody task: ScheduleTaskRequest): ScheduleTaskResponse {
