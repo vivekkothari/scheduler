@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 @ControllerAdvice
 class GlobalExceptionHandler {
 
-    /** Handle TaskInstanceNotFoundException. */
-    @ExceptionHandler(TaskInstanceNotFoundException::class)
-    fun handleTaskNotFoundException(): ResponseEntity<String> {
-        return ResponseEntity("Task not found", HttpStatus.NOT_FOUND)
-    }
+  /** Handle TaskInstanceNotFoundException. */
+  @ExceptionHandler(TaskInstanceNotFoundException::class)
+  fun handleTaskNotFoundException(): ResponseEntity<String> {
+    return ResponseEntity("Task not found", HttpStatus.NOT_FOUND)
+  }
 }

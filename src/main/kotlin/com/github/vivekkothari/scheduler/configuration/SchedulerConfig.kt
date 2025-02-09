@@ -1,7 +1,7 @@
 package com.github.vivekkothari.scheduler.configuration
 
-import org.springframework.boot.context.properties.ConfigurationProperties
 import java.time.Duration
+import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties(prefix = "scheduler")
 /** Application configuration. */

@@ -10,12 +10,12 @@ import com.github.vivekkothari.scheduler.configuration.SchedulerConfig
 import com.github.vivekkothari.scheduler.dto.ScheduleTaskRequest
 import com.github.vivekkothari.scheduler.dto.ScheduleTaskResponse
 import com.github.vivekkothari.scheduler.model.ScheduleTask
+import java.time.Instant
+import java.util.UUID
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
-import java.time.Instant
-import java.util.UUID
 
 /** Service which schedules and cancels tasks. */
 @Service
@@ -47,8 +47,9 @@ data class SchedulerService(
   fun httpTask(): OneTimeTask<ScheduleTask> {
     return oneTime(config.httpTaskName, ScheduleTask::class.java)
       .onFailure(
-        FailureHandler.MaxRetriesFailureHandler(config.maxRetries) { executionComplete,
-                                                                     executionOperations ->
+        FailureHandler.MaxRetriesFailureHandler(config.maxRetries) {
+          executionComplete,
+          executionOperations ->
           logger.warn(
             "Execution failed {} re-trying {}",
             executionComplete.execution.consecutiveFailures,

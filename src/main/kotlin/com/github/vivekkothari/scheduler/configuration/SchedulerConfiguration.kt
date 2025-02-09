@@ -6,11 +6,11 @@ import com.github.kagkarlsson.scheduler.task.helper.OneTimeTask
 import com.github.vivekkothari.scheduler.model.ScheduleTask
 import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
+import javax.sql.DataSource
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
-import javax.sql.DataSource
 
 /** Class responsible for wiring all the dependency. */
 @Configuration

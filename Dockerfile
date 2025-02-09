@@ -10,8 +10,6 @@ RUN yum -y update && \
   rpm -e --nodeps curl || true && \
   rpm -e --nodeps libcurl || true
 
-RUN echo "done"
-
 COPY build/libs/scheduler-0.0.1-SNAPSHOT.jar /app/server.jar
 
 ENTRYPOINT ["java", "-jar", "/app/server.jar"]
