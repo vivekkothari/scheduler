@@ -11,4 +11,6 @@ data class SchedulerConfig(
   val lowerLimitFractionOfThreads: Double,
   val upperLimitFractionOfThreads: Double,
   val httpTaskName: String,
+  val maxRetries: Int = 3,
+  val retryBackoffMultiplier: Long = 5,
 )

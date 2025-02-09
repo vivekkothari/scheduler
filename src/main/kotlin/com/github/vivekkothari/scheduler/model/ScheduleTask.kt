@@ -1,10 +1,12 @@
 package com.github.vivekkothari.scheduler.model
 
-import java.time.Instant
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
 
 /** The request payload to schedule a task. */
-data class ScheduleTask(
-  val executeAt: Instant,
-  val notificationUrl: String,
-  val payload: Map<*, *>,
+data class ScheduleTask
+@JsonCreator
+constructor(
+  @JsonProperty("notificationUrl") val notificationUrl: String,
+  @JsonProperty("payload") val payload: Map<*, *> = mapOf<Any, Any>(),
 )

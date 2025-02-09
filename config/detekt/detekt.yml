@@ -256,4 +256,4 @@ style:
   UseIfEmptyOrIfBlank:
     active: true
   WildcardImport:
-    active: true
+    active: false

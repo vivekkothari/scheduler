@@ -1,18 +1,20 @@
 package com.github.vivekkothari.scheduler
 
-import com.github.vivekkothari.scheduler.model.ScheduleTask
+import com.github.vivekkothari.scheduler.dto.ScheduleTaskRequest
+import com.github.vivekkothari.scheduler.dto.ScheduleTaskResponse
 import org.springframework.web.bind.annotation.*
 
 /** The controller which exposes the REST apis to interact with the app. */
 @RestController
+@RequestMapping("/api")
 data class SchedulerController(private val schedulerService: SchedulerService) {
 
   /** Say hello */
   @get:GetMapping("/") val sayHello: String = "Hello world"
 
   /** Schedule a task. */
-  @PostMapping("/schedule")
-  fun scheduleTask(task: ScheduleTask): String {
+  @PutMapping("/schedule")
+  fun scheduleTask(@RequestBody task: ScheduleTaskRequest): ScheduleTaskResponse {
     return schedulerService.scheduleTask(task)
   }
 

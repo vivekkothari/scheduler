@@ -7,6 +7,8 @@ import com.github.kagkarlsson.scheduler.task.TaskInstanceId
 import com.github.kagkarlsson.scheduler.task.helper.OneTimeTask
 import com.github.kagkarlsson.scheduler.task.helper.Tasks.oneTime
 import com.github.vivekkothari.scheduler.configuration.SchedulerConfig
+import com.github.vivekkothari.scheduler.dto.ScheduleTaskRequest
+import com.github.vivekkothari.scheduler.dto.ScheduleTaskResponse
 import com.github.vivekkothari.scheduler.model.ScheduleTask
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
@@ -19,29 +21,34 @@ import java.util.UUID
 @Service
 data class SchedulerService(
   @Lazy private val scheduler: Scheduler,
-  private val schedulerConfig: SchedulerConfig,
+  private val config: SchedulerConfig,
 ) {
 
   private val logger = LoggerFactory.getLogger(this.javaClass.name)
 
   /** Schedules as task */
-  fun scheduleTask(task: ScheduleTask): String {
+  fun scheduleTask(task: ScheduleTaskRequest): ScheduleTaskResponse {
     val id = UUID.randomUUID().toString()
-    scheduler.schedule(TaskInstance(schedulerConfig.httpTaskName, id, task), task.executeAt)
-    return id
+    scheduler.schedule(
+      TaskInstance(config.httpTaskName, id, ScheduleTask(task.notificationUrl, task.payload)),
+      task.executeAt,
+    )
+    return ScheduleTaskResponse(id)
   }
 
   /** Cancels a scheduled task. */
   fun cancelTask(id: String) {
-    scheduler.cancel(TaskInstanceId.of(schedulerConfig.httpTaskName, id))
+    // Handle the case where the task is not found and throw an exception
+    scheduler.cancel(TaskInstanceId.of(config.httpTaskName, id))
   }
 
   /** Http task which will call http url with the payload. */
   @Bean
   fun httpTask(): OneTimeTask<ScheduleTask> {
-    return oneTime(schedulerConfig.httpTaskName, ScheduleTask::class.java)
+    return oneTime(config.httpTaskName, ScheduleTask::class.java)
       .onFailure(
-        FailureHandler.MaxRetriesFailureHandler(3) { executionComplete, executionOperations ->
+        FailureHandler.MaxRetriesFailureHandler(config.maxRetries) { executionComplete,
+                                                                     executionOperations ->
           logger.warn(
             "Execution failed {} re-trying {}",
             executionComplete.execution.consecutiveFailures,
@@ -50,7 +57,10 @@ data class SchedulerService(
           )
           executionOperations.reschedule(
             executionComplete,
-            Instant.now().plusSeconds(executionComplete.execution.consecutiveFailures * 5L),
+            Instant.now()
+              .plusSeconds(
+                executionComplete.execution.consecutiveFailures * config.retryBackoffMultiplier
+              ),
           )
         }
       )
@@ -61,18 +71,4 @@ data class SchedulerService(
   fun run(inst: TaskInstance<ScheduleTask>) {
     logger.info("Running ${inst.data}")
   }
-  //
-  //  /** Starts the scheduler */
-  //  @PostConstruct
-  //  fun startScheduler() {
-  //    logger.info("✅ Scheduler started on application startup")
-  //    scheduler.start()
-  //  }
-  //
-  //  /** Hook to stop the scheduler when server stops. */
-  //  @PreDestroy
-  //  fun stopService() {
-  //    logger.info("❌ Scheduler shutting down...")
-  //    scheduler.stop()
-  //  }
 }
