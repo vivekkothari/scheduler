@@ -1,0 +1,26 @@
+spring:
+    application:
+        name: "scheduler"
+    datasource:
+        url: ${dbUrl}
+        username: ${dbUser}
+        password: ${dbPassword}
+        driverClassName: org.postgresql.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+        poolName: "scheduler-pool"
+        maximumPoolSize: 10
+        minimumIdle: 2
+        idleTimeout: 30000
+        connectionTimeout: 20000
+        maxLifetime: 1800000
+
+server:
+    port: 9090
+
+scheduler:
+    threadCount: 5
+    pollingDuration: 10s
+    lowerLimitFractionOfThreads: 0.5
+    upperLimitFractionOfThreads: 1.0
+    httpTaskName: http-task
