@@ -4,6 +4,7 @@ import com.github.vivekkothari.scheduler.dto.ScheduleTaskRequest
 import com.github.vivekkothari.scheduler.dto.ScheduleTaskResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 /** The controller which exposes the REST apis to interact with the app. */
@@ -15,7 +16,7 @@ data class SchedulerController(private val schedulerService: SchedulerService) {
   /** Schedule a task. */
   @PutMapping("/schedule")
   @Operation(summary = "Schedule a task")
-  fun scheduleTask(@RequestBody task: ScheduleTaskRequest): ScheduleTaskResponse {
+  fun scheduleTask(@Valid @RequestBody task: ScheduleTaskRequest): ScheduleTaskResponse {
     return schedulerService.scheduleTask(task)
   }
 

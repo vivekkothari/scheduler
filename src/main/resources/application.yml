@@ -1,4 +1,6 @@
 spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
   application:
     name: "scheduler"
   datasource:
@@ -16,6 +18,9 @@ spring:
     maxLifetime: 30m
 
 management:
+  endpoint:
+    httpexchanges:
+      enabled: true
   endpoints:
     web:
       exposure:

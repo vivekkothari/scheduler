@@ -8,6 +8,8 @@ import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
 import javax.sql.DataSource
 import org.slf4j.LoggerFactory
+import org.springframework.boot.actuate.web.exchanges.HttpExchangeRepository
+import org.springframework.boot.actuate.web.exchanges.InMemoryHttpExchangeRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
@@ -26,6 +28,12 @@ data class SchedulerConfiguration(val config: SchedulerConfig) {
       .pollUsingLockAndFetch(config.lowerLimitFractionOfThreads, config.upperLimitFractionOfThreads)
       .serializer(JacksonSerializer())
       .build()
+  }
+
+  /** Wires up the [InMemoryHttpExchangeRepository] which is used to store the http exchanges. */
+  @Bean
+  fun httpExchangeRepository(): HttpExchangeRepository {
+    return InMemoryHttpExchangeRepository()
   }
 
   /** Life cycle handler. */
