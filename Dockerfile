@@ -12,4 +12,6 @@ RUN yum -y update && \
 
 COPY build/libs/scheduler-0.0.1-SNAPSHOT.jar /app/server.jar
 
+EXPOSE 8080 8081
+
 ENTRYPOINT ["java", "-jar", "/app/server.jar"]

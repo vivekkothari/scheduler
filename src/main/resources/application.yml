@@ -15,6 +15,14 @@ spring:
     connectionTimeout: 2m
     maxLifetime: 30m
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # Expose all endpoints
+  server:
+    port: 8081
+
 springdoc:
   api-docs:
     enabled: true
