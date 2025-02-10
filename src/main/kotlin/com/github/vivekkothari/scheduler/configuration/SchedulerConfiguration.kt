@@ -13,6 +13,8 @@ import org.springframework.boot.actuate.web.exchanges.InMemoryHttpExchangeReposi
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
+import org.springframework.web.client.RestTemplate
+import org.springframework.web.reactive.function.client.WebClient
 
 /** Class responsible for wiring all the dependency. */
 @Configuration
@@ -34,6 +36,12 @@ data class SchedulerConfiguration(val config: SchedulerConfig) {
   @Bean
   fun httpExchangeRepository(): HttpExchangeRepository {
     return InMemoryHttpExchangeRepository()
+  }
+
+  /** Wires up the [RestTemplate]. */
+  @Bean
+  fun webClient(): WebClient {
+    return WebClient.builder().build()
   }
 
   /** Life cycle handler. */

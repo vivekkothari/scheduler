@@ -13,8 +13,16 @@ data class ScheduleTaskRequest(
   @JsonProperty("notificationUrl")
   @field:URL(message = "notificationUrl must be a valid URL", protocol = "https")
   val notificationUrl: String,
+  @JsonProperty("httpMethod") val httpMethod: HttpMethod = HttpMethod.POST,
   @JsonProperty("payload") val payload: Map<*, *> = mapOf<Any, Any>(),
 )
+
+/** Enum for HTTP methods. */
+enum class HttpMethod {
+  GET,
+  POST,
+  PUT,
+}
 
 /** Response payload for a scheduled task. */
 data class ScheduleTaskResponse(@JsonProperty("id") val id: String)

@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*
 
 /** The controller which exposes the REST apis to interact with the app. */
 @RestController
-@RequestMapping("/api", consumes = ["application/json"], produces = ["application/json"])
+@RequestMapping("/api")
 @Tag(name = "Scheduler", description = "Scheduler API")
 data class SchedulerController(private val schedulerService: SchedulerService) {
 
   /** Schedule a task. */
-  @PutMapping("/schedule")
+  @PutMapping("/schedule", consumes = ["application/json"], produces = ["application/json"])
   @Operation(summary = "Schedule a task")
   fun scheduleTask(@Valid @RequestBody task: ScheduleTaskRequest): ScheduleTaskResponse {
     return schedulerService.scheduleTask(task)

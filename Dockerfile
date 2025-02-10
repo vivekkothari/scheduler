@@ -1,17 +1,14 @@
-FROM amazoncorretto:21-al2023-headless
+# Use the official Eclipse Temurin base image with JDK 21
+FROM eclipse-temurin:21-jre-alpine
 
+# Set the working directory
 WORKDIR /app
 
-# Change gnupg2-minimal to gnupg2 for AL2023 because the Doppler CLI requires gpgv command from the full package
-RUN dnf swap gnupg2-minimal gnupg2 -y
-
-RUN yum -y update && \
-  yum -y remove vi && \
-  rpm -e --nodeps curl || true && \
-  rpm -e --nodeps libcurl || true
-
+# Copy the application JAR file to the container
 COPY build/libs/scheduler-0.0.1-SNAPSHOT.jar /app/server.jar
 
-EXPOSE 8080 8081
+# Expose the port your application runs on
+EXPOSE 8080
 
+# Command to run the application
 ENTRYPOINT ["java", "-jar", "/app/server.jar"]

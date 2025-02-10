@@ -7,6 +7,7 @@ import com.github.kagkarlsson.scheduler.task.TaskInstanceId
 import com.github.kagkarlsson.scheduler.task.helper.OneTimeTask
 import com.github.kagkarlsson.scheduler.task.helper.Tasks.oneTime
 import com.github.vivekkothari.scheduler.configuration.SchedulerConfig
+import com.github.vivekkothari.scheduler.dto.HttpMethod
 import com.github.vivekkothari.scheduler.dto.ScheduleTaskRequest
 import com.github.vivekkothari.scheduler.dto.ScheduleTaskResponse
 import com.github.vivekkothari.scheduler.model.ScheduleTask
@@ -15,13 +16,16 @@ import java.util.UUID
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Lazy
+import org.springframework.http.HttpMethod as SpringHttpMethod
 import org.springframework.stereotype.Service
+import org.springframework.web.reactive.function.client.WebClient
 
 /** Service which schedules and cancels tasks. */
 @Service
 data class SchedulerService(
   @Lazy private val scheduler: Scheduler,
   private val config: SchedulerConfig,
+  private val webClient: WebClient,
 ) {
 
   private val logger = LoggerFactory.getLogger(this.javaClass.name)
@@ -30,7 +34,11 @@ data class SchedulerService(
   fun scheduleTask(task: ScheduleTaskRequest): ScheduleTaskResponse {
     val id = UUID.randomUUID().toString()
     scheduler.schedule(
-      TaskInstance(config.httpTaskName, id, ScheduleTask(task.notificationUrl, task.payload)),
+      TaskInstance(
+        config.httpTaskName,
+        id,
+        ScheduleTask(task.notificationUrl, task.httpMethod, task.payload),
+      ),
       task.executeAt,
     )
     return ScheduleTaskResponse(id)
@@ -71,5 +79,21 @@ data class SchedulerService(
   /** Runs a task */
   fun run(inst: TaskInstance<ScheduleTask>) {
     logger.info("Running ${inst.data}")
+    webClient
+      .method(inst.data.httpMethod.toSpringHttpMethod())
+      .uri(inst.data.notificationUrl)
+      .bodyValue(inst.data.payload)
+      .retrieve()
+      .bodyToMono(String::class.java)
+      .subscribe { logger.info("Response: $it") }
+  }
+
+  /** Converts [HttpMethod] to [SpringHttpMethod]. */
+  fun HttpMethod.toSpringHttpMethod(): SpringHttpMethod {
+    return when (this) {
+      HttpMethod.GET -> SpringHttpMethod.GET
+      HttpMethod.POST -> SpringHttpMethod.POST
+      HttpMethod.PUT -> SpringHttpMethod.PUT
+    }
   }
 }

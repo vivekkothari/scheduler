@@ -3,9 +3,9 @@ package com.github.vivekkothari.scheduler
 import com.github.kagkarlsson.scheduler.Scheduler
 import com.github.kagkarlsson.scheduler.task.TaskInstanceId
 import com.github.vivekkothari.scheduler.configuration.SchedulerConfig
+import com.github.vivekkothari.scheduler.dto.HttpMethod
 import com.github.vivekkothari.scheduler.dto.ScheduleTaskRequest
 import com.github.vivekkothari.scheduler.dto.ScheduleTaskResponse
-import java.time.Instant
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.web.reactive.server.WebTestClient
+import java.time.Instant
 
 @SpringBootTest(
   webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -29,7 +30,6 @@ class SchedulerApplicationTest {
   private val logger = LoggerFactory.getLogger(this.javaClass.name)
 
   @Autowired private lateinit var webTestClient: WebTestClient
-
   @Autowired private lateinit var scheduler: Scheduler
   @Autowired private lateinit var config: SchedulerConfig
 
@@ -43,7 +43,8 @@ class SchedulerApplicationTest {
         .bodyValue(
           ScheduleTaskRequest(
             Instant.now().plusSeconds(3600),
-            "http://localhost:8080/notify",
+            "https://localhost:8080/notify",
+            HttpMethod.POST,
             mapOf("key" to "value"),
           )
         )
