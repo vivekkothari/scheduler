@@ -5,7 +5,7 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Copy the application JAR file to the container
-COPY build/libs/scheduler-0.0.1-SNAPSHOT.jar /app/server.jar
+COPY build/libs/scheduler-*SNAPSHOT.jar /app/server.jar
 
 # Expose the port your application runs on
 EXPOSE 8080
