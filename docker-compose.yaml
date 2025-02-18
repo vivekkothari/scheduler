@@ -1,6 +1,22 @@
 ---
 # This file is used for a local dev env, not a part of this container pod.
 services:
+  app:
+    build: .
+    ports:
+      - ":8080"
+      - ":8081"
+    environment:
+      - dbUrl=jdbc:postgresql://postgresql:5432/scheduler
+      - dbUser=user
+      - dbPassword=password
+    deploy:
+      replicas: 2
+    depends_on:
+      - postgresql
+    networks:
+      - scheduler-app
+
   postgresql:
     image: docker.io/bitnami/postgresql:16.1.0
     container_name: "postgresql"
@@ -15,3 +31,21 @@ services:
       - POSTGRESQL_DATABASE=scheduler
       - ALLOW_EMPTY_PASSWORD=yes
       - POSTGRESQL_MAX_CONNECTIONS=1000
+    networks:
+      - scheduler-app
+
+  # Add nginx as reverse proxy
+  nginx:
+    image: docker.io/bitnami/nginx:1.25.0
+    container_name: "nginx"
+    ports:
+      - "80:80"
+    volumes:
+      - ./src/main/resources/nginx:/opt/bitnami/nginx/conf/server_blocks
+    depends_on:
+      - app
+    networks:
+      - scheduler-app
+
+networks:
+  scheduler-app:
