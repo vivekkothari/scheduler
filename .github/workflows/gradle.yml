@@ -22,8 +22,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build And Run Docker Environment
-      run: docker compose down && docker volume prune -f && docker compose up -d --wait
 
     - name: Set up JDK 21
       uses: actions/setup-java@v4
@@ -38,3 +36,6 @@ jobs:
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build --no-daemon
+
+    - name: Build And Run Docker Environment
+      run: docker compose down && docker volume prune -f && docker compose up -d --wait
