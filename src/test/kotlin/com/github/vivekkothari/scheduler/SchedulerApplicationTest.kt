@@ -6,6 +6,7 @@ import com.github.vivekkothari.scheduler.configuration.SchedulerConfig
 import com.github.vivekkothari.scheduler.dto.HttpMethod
 import com.github.vivekkothari.scheduler.dto.ScheduleTaskRequest
 import com.github.vivekkothari.scheduler.dto.ScheduleTaskResponse
+import java.time.Instant
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
@@ -20,7 +21,6 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.utility.DockerImageName
-import java.time.Instant
 
 @SpringBootTest(
   webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
