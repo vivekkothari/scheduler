@@ -37,7 +37,7 @@ dependencies {
     because("To run the app in docker-compose for development.")
   }
 
-  implementation("com.zaxxer:HikariCP:6.2.1") { because("To use the HikariCP connection pool.") }
+  implementation("com.zaxxer:HikariCP:6.3.0") { because("To use the HikariCP connection pool.") }
   implementation("com.github.kagkarlsson:db-scheduler:15.3.0") { because("To schedule the tasks.") }
   implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.6") {
     because("To expose the swagger ui.")
