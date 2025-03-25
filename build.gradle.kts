@@ -1,17 +1,17 @@
 plugins {
-  kotlin("jvm") version "2.0.10"
-  kotlin("plugin.spring") version "2.0.10"
-  id("org.springframework.boot") version "3.4.2"
+  kotlin("jvm") version "2.1.20"
+  kotlin("plugin.spring") version "2.1.20"
+  id("org.springframework.boot") version "3.4.4"
   id("io.spring.dependency-management") version "1.1.7"
-  id("com.ncorti.ktfmt.gradle") version "0.21.0"
-  id("io.gitlab.arturbosch.detekt") version "1.23.7"
+  id("com.ncorti.ktfmt.gradle") version "0.22.0"
+  // id("io.gitlab.arturbosch.detekt") version "1.23.8"
 }
 
 group = "com.github.vivekkothari"
 
 version = "0.0.1-SNAPSHOT"
 
-java { toolchain { languageVersion = JavaLanguageVersion.of(21) } }
+java { toolchain { languageVersion = JavaLanguageVersion.of(23) } }
 
 repositories { mavenCentral() }
 
@@ -38,8 +38,8 @@ dependencies {
   }
 
   implementation("com.zaxxer:HikariCP:6.2.1") { because("To use the HikariCP connection pool.") }
-  implementation("com.github.kagkarlsson:db-scheduler:15.1.1") { because("To schedule the tasks.") }
-  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.4") {
+  implementation("com.github.kagkarlsson:db-scheduler:15.3.0") { because("To schedule the tasks.") }
+  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.6") {
     because("To expose the swagger ui.")
   }
 
@@ -49,8 +49,8 @@ dependencies {
   testImplementation("io.projectreactor:reactor-test")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-  testImplementation("org.testcontainers:junit-jupiter:1.19.8")
-  testImplementation("org.testcontainers:postgresql:1.19.8")
+  testImplementation("org.testcontainers:junit-jupiter:1.20.6")
+  testImplementation("org.testcontainers:postgresql:1.20.6")
 }
 
 kotlin { compilerOptions { freeCompilerArgs.addAll("-Xjsr305=strict") } }
@@ -62,11 +62,11 @@ ktfmt {
 }
 
 // detekt configuration
-
-detekt {
-  autoCorrect = true
-  config.setFrom(file("${rootProject.projectDir}/config/detekt/detekt.yml"))
-  buildUponDefaultConfig = true
-}
+// FIXME: uncomment after it supports latest kotlin version and JDK 23
+// detekt {
+//  autoCorrect = true
+//  config.setFrom(file("${rootProject.projectDir}/config/detekt/detekt.yml"))
+//  buildUponDefaultConfig = true
+// }
 
 tasks.withType<Test> { useJUnitPlatform() }

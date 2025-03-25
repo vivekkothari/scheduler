@@ -1,11 +1,15 @@
-# Use the official Eclipse Temurin base image with JDK 21
-FROM eclipse-temurin:21-jre-alpine
+# Build stage
+FROM gradle:8.13.0-jdk23-corretto-al2023 AS build
+WORKDIR /app
+COPY . .
+RUN ./gradlew build --no-daemon -x test
 
-# Set the working directory
+# Final stage
+FROM eclipse-temurin:23-jre-alpine
 WORKDIR /app
 
-# Copy the application JAR file to the container
-COPY build/libs/scheduler-*SNAPSHOT.jar /app/server.jar
+# Copy the built JAR from the build stage
+COPY --from=build /app/build/libs/scheduler-*SNAPSHOT.jar /app/server.jar
 
 # Expose the port your application runs on
 EXPOSE 8080
