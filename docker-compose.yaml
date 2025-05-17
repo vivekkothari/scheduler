@@ -36,7 +36,7 @@ services:
 
   # Add nginx as reverse proxy
   nginx:
-    image: docker.io/bitnami/nginx:1.25.0
+    image: docker.io/bitnami/nginx:1.28.0
     container_name: "nginx"
     ports:
       - "80:80"
