@@ -18,7 +18,7 @@ services:
       - scheduler-app
 
   postgresql:
-    image: docker.io/bitnami/postgresql:16.1.0
+    image: docker.io/bitnami/postgresql:17.5.0
     container_name: "postgresql"
     ports:
       - "5435:5432"
