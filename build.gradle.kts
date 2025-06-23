@@ -49,8 +49,8 @@ dependencies {
   testImplementation("io.projectreactor:reactor-test")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-  testImplementation("org.testcontainers:junit-jupiter:1.21.1")
-  testImplementation("org.testcontainers:postgresql:1.21.1")
+  testImplementation("org.testcontainers:junit-jupiter:1.21.2")
+  testImplementation("org.testcontainers:postgresql:1.21.2")
 }
 
 kotlin { compilerOptions { freeCompilerArgs.addAll("-Xjsr305=strict") } }
