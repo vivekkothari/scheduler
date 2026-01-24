@@ -18,7 +18,7 @@ services:
       - scheduler-app
 
   postgresql:
-    image: docker.io/bitnami/postgresql:17.6.0
+    image: docker.io/bitnami/postgresql:latest
     container_name: "postgresql"
     ports:
       - "5435:5432"
@@ -36,7 +36,7 @@ services:
 
   # Add nginx as reverse proxy
   nginx:
-    image: docker.io/bitnami/nginx:1.29.1
+    image: docker.io/bitnami/nginx:latest
     container_name: "nginx"
     ports:
       - "80:80"
