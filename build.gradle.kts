@@ -39,7 +39,7 @@ dependencies {
 
   implementation("com.zaxxer:HikariCP:6.3.0") { because("To use the HikariCP connection pool.") }
   implementation("com.github.kagkarlsson:db-scheduler:16.7.0") { because("To schedule the tasks.") }
-  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.9") {
+  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:3.0.1") {
     because("To expose the swagger ui.")
   }
 
